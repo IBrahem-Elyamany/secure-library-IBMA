@@ -16,7 +16,7 @@
         </div>
         <div class="nav-menu" id="navMenu">
             <ul>
-                <li><a href="#" class="link active">Home</a></li>
+                <li><a href="/" class="link active">Home</a></li>
                 <li><a href="#" class="link">Blog</a></li>
                 <li><a href="#" class="link">Services</a></li>
                 <li><a href="#" class="link">About</a></li>
@@ -35,18 +35,19 @@
     <div class="form-box">
         
         <!------------------- login form -------------------------->
-
+        
         <div class="login-container" id="login">
+            <form action="/signin" method='POST'>
             <div class="top">
                 <span>Don't have an account? <a href="signup" onclick="register()">Sign Up</a></span>
                 <header>Login</header>
             </div>
             <div class="input-box">
-                <input type="text" class="input-field" placeholder="Username or Email">
+                <input type="text" name="username" class="input-field" placeholder="Username or Email">
                 <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-                <input type="password" class="input-field" placeholder="Password">
+                <input type="password" name="password" class="input-field" placeholder="Password">
                 <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
@@ -62,6 +63,7 @@
                 </div>
             </div> -->
         </div>
+    </form>
     </div>
 </div>   
 

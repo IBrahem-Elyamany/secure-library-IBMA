@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addproduct</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>Admin</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/" class="link active">Home</a></li>
+                    <li><a href="#" class="link">Blog</a></li>
+                    <li><a href="#" class="link">Services</a></li>
+                    <li><a href="#" class="link">About</a></li>
+                    <li><a href="/addproduct" class="link">Add_product</a></li>
+                </ul>
+            </div>
+        </nav>
+    
+        
+        <form action="/addproduct" method="POST" enctype="multipart/form-data">
+            <div class="profile">
+            <input  type="file" name="photo" >
+            <div>
+                <p >Name</p>
+            <input class="input_class" type="text" name="name" placeholder="name" required>
+            <p >Type</p>
+            <input class="input_class" type="text" name="type" placeholder="type" required>
+            <p >Amout</p>
+            <input class="input_class" type="number" name="amout" placeholder="Amount" required>
+            <p >Price</p>
+            <input class="input_class" type="number" name="price" placeholder="Price" required>
+            <p >Text</p>
+            <input class="input_class" style="height: 90px;width: 400px;border-radius: 20px;" type="text" name="text" placeholder="text"  required>
+                <br>  <br>
+            <button class="btn1" type="submit" value="Upload" >submit</button>
+            </div>
+            </div>
+        </form>
+        
+    </div>
+
+    </body>
+    </html>

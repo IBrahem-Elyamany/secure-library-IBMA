@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>Admin</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/admin" class="link active">Home</a></li>
+                    <li><a href="#" class="link">Blog</a></li>
+                    <li><a href="#" class="link">Services</a></li>
+                    <li><a href="#" class="link">About</a></li>
+                    <li><a href="/addproduct" class="link">Add_product</a></li>
+                    <li><a href="/logout" class="link">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    
+    <br> <br> 
+        <table border="2" class="table">
+            <tr>
+                <td>Username</td>
+                <td>Email</td>
+            </tr>
+            
+                {%for i in users%}
+                <tr>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                </tr>
+                {%endfor%}
+            
+        </table>
+    </div>
+</body>
+</html>

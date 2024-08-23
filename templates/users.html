@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+    <title>Login</title>
+</head>
+<body>
+ <div class="wrapper">
+    <nav class="nav">
+        <div class="nav-logo">
+            <p>{{username}}</p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul>
+                <li><a href="/" class="link active">Home</a></li>
+                <li><a href="#" class="link">Blog</a></li>
+                <li><a href="#" class="link">Services</a></li>
+                <li><a href="#" class="link">About</a></li>
+                <li><a href="/logout" class="link">Logout</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-menu-btn">
+            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+        </div>
+    </nav>
+    <div class="cards">
+        {%for i in products%}
+        <div class="card">
+            <img style="border-radius: 30px 30px 0px 0px; width:300px; height:230px;"  src="{{url_for('static',filename='uploads/products/'+i[4])}}" />
+            <div class="cardinfo">
+            <div>
+                <span style="padding: 0px 20px;">{{i[6]}}</span> 
+                <h3 style="margin: 0; padding: 0px 20px;">{{i[1]}}</h3>
+            </div>
+            <a href=""><img src="{{url_for('static',filename='uploads/online-shopping.png')}}"  class="img"/></a>
+            </div>
+            {%endfor%}
+        </div>
+</div>
+    
+
+</body>
+</html>
