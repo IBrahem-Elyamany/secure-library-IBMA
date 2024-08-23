@@ -1,0 +1,133 @@
+body{
+    background: url("images/login.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.header{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-radius: 0px 0px 50px 50px;
+}
+
+.profile{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px;
+}
+
+.link {
+    padding: 10px 30px;   
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 20px;
+
+}
+.link:hover{
+    background-color:rgb(99, 166, 224);
+}
+.btn1 {
+    color:white;
+    background-color: orange;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    font-size: 20px;
+}
+.btn1:hover{
+background-color: rgb(241, 185, 81);
+
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+table th, table td {
+    padding: 12px 15px;
+}
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.input_class{
+    padding: 0px 10px;
+border-radius: 100px;
+border: none;
+outline: none;
+height: 30px;
+width: 400px;
+
+}
+.profile-picture {
+    height: 160px;
+    width: 160px;
+    object-fit: cover;
+    border: 4px solid #007bff;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    display: block;
+    margin: 15px;
+}
+.login{
+
+    
+    justify-content: space-between;
+    align-items: center;
+    padding: 200px 400px;
+}
+
+
+.cards{
+    padding: 0px 100px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card{ 
+    
+width:  300px;
+    height: 300px;
+background-color: rgba(179, 170, 170, 0.594);
+border-radius: 30px;
+
+}
+.cardinfo{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+
+
+}
+
+.cardinfo .img{
+    width: 50px; 
+}
+.cardinfo .img:hover{
+    transform: scale(1.3);
+}
