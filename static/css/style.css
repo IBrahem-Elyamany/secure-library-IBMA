@@ -8,11 +8,13 @@
     font-family: 'Poppins', sans-serif;
 }
 body{
-    background: url("images/login.webp");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    overflow: hidden;
+    background: url("images/imageblur.png");
+    
+    
+    
+}
+body::-webkit-scrollbar {
+    display: none;
 }
 .wrapper{
     display: flex;

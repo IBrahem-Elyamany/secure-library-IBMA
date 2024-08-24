@@ -6,6 +6,8 @@
     <title>Admin</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
     <div class="wrapper">
@@ -15,11 +17,9 @@
             </div>
             <div class="nav-menu" id="navMenu">
                 <ul>
-                    <li><a href="/admin" class="link active">Home</a></li>
-                    <li><a href="#" class="link">Blog</a></li>
-                    <li><a href="#" class="link">Services</a></li>
-                    <li><a href="#" class="link">About</a></li>
-                    <li><a href="/addproduct" class="link">Add_product</a></li>
+                    <li><a href="/" class="link active">Home</a></li>
+                    <li><a href="/addproduct" class="link">Addproduct</a></li>
+                    <li><a href="/product" class="link">Product</a></li>
                     <li><a href="/logout" class="link">Logout</a></li>
                 </ul>
             </div>
@@ -36,6 +36,10 @@
                 <tr>
                 <td>{{i[1]}}</td>
                 <td>{{i[2]}}</td>
+                {%if i[1] != 'admin'%}
+                <td><a href="{{url_for('deleteuser',id=i[0])}}"><i style="padding: 10px 10px;color:white;" class="fa-solid fa-trash fa-2xl"></i></a>
+                <a href=""><i style="color:white;"class="fa-solid fa-wallet fa-2xl"></i></a></td>
+                {%endif%}
                 </tr>
                 {%endfor%}
             
