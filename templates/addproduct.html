@@ -8,26 +8,41 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
 </head>
 <body>
+   
     <div class="wrapper">
+        
         <nav class="nav">
+        
             <div class="nav-logo">
                 <p>Admin</p>
             </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block body %}{% endblock %}
             <div class="nav-menu" id="navMenu">
                 <ul>
                     <li><a href="/" class="link active">Home</a></li>
-                    <li><a href="#" class="link">Blog</a></li>
-                    <li><a href="#" class="link">Services</a></li>
-                    <li><a href="#" class="link">About</a></li>
-                    <li><a href="/addproduct" class="link">Add_product</a></li>
+                    <li><a href="/addproduct" class="link">Addproduct</a></li>
+                    <li><a href="/product" class="link">Product</a></li>
+                    <li><a href="/logout" class="link">Logout</a></li>
                 </ul>
             </div>
+          
         </nav>
-    
+        
         
         <form action="/addproduct" method="POST" enctype="multipart/form-data">
             <div class="profile">
+            <div>
             <input  type="file" name="photo" >
+            </div>
             <div>
                 <p >Name</p>
             <input class="input_class" type="text" name="name" placeholder="name" required>
@@ -38,7 +53,7 @@
             <p >Price</p>
             <input class="input_class" type="number" name="price" placeholder="Price" required>
             <p >Text</p>
-            <input class="input_class" style="height: 90px;width: 400px;border-radius: 20px;" type="text" name="text" placeholder="text"  required>
+            <textarea class="input_class" style="height: 90px; width: 400px; border-radius: 20px;" name="text" placeholder="text"></textarea>
                 <br>  <br>
             <button class="btn1" type="submit" value="Upload" >submit</button>
             </div>

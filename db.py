@@ -56,10 +56,10 @@ def search_users(connection, search_query):
     cursor.execute(query, (f"%{search_query}%",))
     return cursor.fetchall()
 
-def delete_user(connection, username):
+def delete_user(connection, id):
     cursor = connection.cursor()
-    query = ''' DELETE FROM users WHERE username = ? '''
-    cursor.execute(query, (username,)) 
+    query = ''' DELETE FROM users WHERE id = ? '''
+    cursor.execute(query, (id,)) 
     connection.commit()
 
 def update_user(connection , user_data):
@@ -87,7 +87,7 @@ def get_user(connection, username):
 def inittable_product(conn):
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS prodects (
+        CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             amout INTEGER NOT NULL,
@@ -101,18 +101,37 @@ def inittable_product(conn):
 
 def add_product(conn,data):
     cur=conn.cursor()
-    quary="INSERT INTO prodects(name,price,amout,photo,text,type) VALUES (?,?,?,?,?,?)"
+    quary="INSERT INTO products (name,price,amout,photo,text,type) VALUES (?,?,?,?,?,?)"
     cur.execute(quary,(data['name'],data['price'],data['amout'],data['photo'],data['text'],data['type']))
     conn.commit()
 
 def get_product(conn):
     cur=conn.cursor()
-    quary="SELECT * FROM prodects"
+    quary="SELECT * FROM products"
     cur.execute(quary)
     return cur.fetchall()
 
+def get_product_id(conn,id):
+    cur=conn.cursor()
+    quary="SELECT * FROM products WHERE id=?"
+    cur.execute(quary,(id,))
+    return cur.fetchone()
+
+def update_product(conn,data,id):
+    cur=conn.cursor()
+    quary="UPDATE products SET name=?,price=?,amout=?,text=?,type=? WHERE id=?"
+    cur.execute(quary,(data['name'],data['price'],data['amout'],data['text'],data['type'],id))
+    conn.commit()
+
+
+def update_photo_product(conn,id,filename):
+    cur=conn.cursor()
+    quary="UPDATE products SET photo=? WHERE id=?"
+    cur.execute(quary,(filename,id))
+    conn.commit()
+    
 def delete_product(conn,id):
     cur=conn.cursor()
-    quary="DELETE FROM prodects WHERE id=?"
+    quary="DELETE FROM products WHERE id=?"
     cur.execute(quary,(id,))
     conn.commit()
