@@ -27,6 +27,9 @@ def index():
 
 
 
+
+
+
 @app.route('/signin', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 def signin():
@@ -53,8 +56,8 @@ def signup():
         lNAme=escape(request.form['lastname'])
 
         if not check.is_valid_email(email):
-             flash("Sorry You Entered invalid email", "danger")
-             return render_template('signup.html')
+            flash("Sorry You Entered invalid email", "danger")
+            return render_template('signup.html')
 
         if not check.is_strong_password(password):
             flash("Sorry You Entered a weak Password Please Choose a stronger one", "danger")
@@ -153,6 +156,25 @@ def deleteuser(id):
         if session['username']=='admin':
             db.delete_user(connection,id)
             return redirect(url_for('index'))
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
+
+
+
+@app.route('/addtowallet/<id>',methods=['GET','POST'])
+def addtowallet(id):
+    if 'username' in session:
+        if session['username']=='admin':
+            user=db.get_user_id(connection,id)
+            if request.method=="POST":
+                money=request.form['wallet']
+                money0=int(money)+user[7]
+                db.update_wallet(connection,id,money0)
+                return redirect(url_for('index'))
+            return render_template('addtowallet.html',user=user)
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     db.init_db(connection)
     db.inittable_product(connection)
