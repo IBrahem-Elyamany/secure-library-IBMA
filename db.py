@@ -18,7 +18,8 @@ def init_db(connection):
 			password TEXT NOT NULL,
             fName TEXT ,
             lName TEXT,
-            photo_name TEXT
+            photo_name TEXT,
+            wallet INTEGER
 		)
 	''')
 
@@ -28,7 +29,7 @@ def init_db(connection):
 def add_user(connection, username, email, lName, password , photo_name):
     cursor = connection.cursor()
     hashed_password = check.hash_password(password)
-    query = '''INSERT INTO users (username ,email ,fName ,lName , password , photo_name) VALUES (? ,? ,? ,? ,? ,? )'''
+    query = '''INSERT INTO users (username ,email ,fName ,lName , password , photo_name,wallet) VALUES (? ,? ,? ,? ,? ,?,0)'''
     cursor.execute(query, (username ,email ,username ,lName , hashed_password , photo_name))
     connection.commit()
 
@@ -59,7 +60,7 @@ def search_users(connection, search_query):
 
 def delete_user(connection, id):
     cursor = connection.cursor()
-    query = ''' DELETE FROM users WHERE id = ? '''
+    query = ''' DELETE FROM users WHERE id = ? AND id != 1'''
     cursor.execute(query, (id,)) 
     connection.commit()
 
@@ -82,8 +83,17 @@ def get_user(connection, username):
     query = '''SELECT * FROM users WHERE username = ?'''
     cursor.execute(query, (username,))
     return cursor.fetchone()
+def get_user_id(connection, id):
+    cursor = connection.cursor()
+    query = '''SELECT * FROM users WHERE id = ?'''
+    cursor.execute(query, (id,))
+    return cursor.fetchone()
 
-
+def update_wallet(connection,id,money):
+    cursor = connection.cursor()  
+    query = '''UPDATE users SET wallet = ? WHERE id = ? AND id != 1'''
+    cursor.execute(query, (money,id))  
+    connection.commit() 
 
 def inittable_product(conn):
     cursor = conn.cursor()

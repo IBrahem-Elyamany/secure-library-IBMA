@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Addtowallet</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -24,28 +24,19 @@
                 </ul>
             </div>
         </nav>
-    
-    <br> <br> 
-        <table border="2" class="table">
-            <tr>
-                <td>Username</td>
-                <td>Email</td>
-                <td>Wallet</td>
-            </tr>
-            
-                {%for i in users%}
-                <tr>
-                <td>{{i[1]}}</td>
-                <td>{{i[2]}}</td>
-                {%if i[1] != 'admin'%}
-                <td>{{i[7]}}</td>
-                <td><a href="{{url_for('deleteuser',id=i[0])}}"><i style="padding: 10px 10px;color:white;" class="fa-solid fa-trash fa-2xl"></i></a>
-                <a href="{{url_for('addtowallet',id=i[0])}}"><i style="color:white;"class="fa-solid fa-wallet fa-2xl"></i></a></td>
-                {%endif%}
-                </tr>
-                {%endfor%}
-            
-        </table>
+        <div class="profile">
+            <div><h1 class="user-name">{{user[1]}}</h1>
+                <h2 class="user-money"><i style="color:white;"class="fa-solid fa-wallet fa-2xl"></i>  : {{user[7]}}</h2>
+                </div>
+                <br> <br> 
+                <div style="padding: 0px 100px;">
+    <form action="{{url_for('addtowallet',id=user[0])}}" method="POST" class="wallet-form">
+        <p class="money-label">Add Money</p>
+        <input class="input_class money-input" type="number" name="wallet" placeholder="Enter amount" >
+        <button type="submit" class="submit-btn">Add to Wallet</button>
+    </form>
+</div>
+</div>
     </div>
 </body>
 </html>
