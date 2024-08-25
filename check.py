@@ -1,5 +1,7 @@
 import os
 import re
+import hashlib
+import hmac
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -33,3 +35,18 @@ def hash_password(password):
 
 def is_password_correct(password, hashed_password):
     return check_password_hash(hashed_password, password)
+
+
+
+def create_mac(price):
+    secret_password = b"#%$2341dw/123\\*+d2merti231war4"
+    price = str(price).encode('utf-8')
+    mac = hmac.new(secret_password, price, hashlib.sha256).hexdigest()
+
+    return mac
+
+def get_product_by_id(products_list, product_id):
+    for product in products_list:
+        if product['id'] == int(product_id):
+            return product
+    return None

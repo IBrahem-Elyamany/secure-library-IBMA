@@ -21,7 +21,8 @@ def index():
         if session['username']=='admin':
             return render_template('admin.html',users=db.get_all_users(connection))
         else:
-            return render_template('users.html',products=db.get_product(connection),username=session['username'])
+            user=db.get_user(connection,session['username'])
+            return render_template('users.html',products=db.get_product(connection),user=user)
 
     return render_template('index.html',products=db.get_product(connection))
 
@@ -144,8 +145,71 @@ def editproduct(id):
             return render_template('editproduct.html',product=product)
     return redirect(url_for('index'))
 
+@app.route('/detils/<id>', methods=['GET', 'POST'])
+def detils(id):
+    idd = db.get_product_id(connection,id)
+    return render_template('detils.html',id=idd)
 
 
+@app.route('/add_to_cart/<id0>')
+def add_to_cart(id0):
+    product = db.get_product_id(connection,id0)
+
+    
+    if 'username' not in session:
+        flash("You must be logged in to add items to your cart.", "warning")
+        return redirect(url_for('signin'))
+
+    
+    cart = session.get('cart', [])
+    cart.append({'product_id': product[0], 'prodcut_name': product[1], 'price': product[3], 'quantity': 1})
+    session['cart'] = cart
+
+    flash(f"Added product {product[0]} with price {product[3]} to your cart.", "success")
+    return redirect(url_for('index'))
+
+
+@app.route('/cart')
+def cart():
+    cart = session.get('cart', [])
+    return render_template('cart.html', cart=cart)
+
+
+@app.route('/checkout')
+def checkout():
+    product_id = request.args.get('product_id')
+    name = request.args.get('name')
+    price = request.args.get('price')
+    product=db.get_product_id(connection,product_id)
+    session['Correct_MAC'] = check.create_mac(product[3])
+
+    return render_template('checkout.html', product_id=product_id, name=name, price=price)
+
+@app.route('/confirm_purchase', methods=['POST'])
+def confirm_purchase():
+    product_id = request.form['product_id']
+    price = request.form['price']
+    product=db.get_product_id(connection,product_id)
+    username=session['username']
+    user=db.get_user(connection,username)
+    money=int(user[7])-int(product[3])
+    
+    
+    Possible_Correct_MAC = check.create_mac(price)
+
+    if 'Correct_MAC' in session and session['Correct_MAC'] == Possible_Correct_MAC:
+        if money>=0:
+            flash(f"Purchase confirmed at price ${price}.",'success')
+            db.update_wallet(connection,user[0],money)
+            db.update_amount(connection,product[0],int(product[2])-1)
+            return redirect(url_for('index'))
+        else:
+            flash("Sorry there is not enough Money",'danger')
+            return redirect(url_for('index'))
+    return redirect(url_for('index'))
+
+    
+    
 @app.route('/logout')
 def logout():
     session.pop('username',None)
@@ -173,6 +237,20 @@ def addtowallet(id):
                 return redirect(url_for('index'))
             return render_template('addtowallet.html',user=user)
     return redirect(url_for('index'))
+
+@app.route('/search',methods=['GET','POST'])
+def search():
+    if request.method=='POST':
+        search0=request.form['search']
+        products=db.get_product_search(connection,search0)
+        if 'username' in session:
+            user=db.get_user(connection,session['username'])
+        else:
+            user=None
+        return render_template('searchre.html',products=products,user=user)
+    
+    return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':

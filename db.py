@@ -133,7 +133,11 @@ def update_product(conn,data,id):
     quary="UPDATE products SET name=?,price=?,amout=?,text=?,type=? WHERE id=?"
     cur.execute(quary,(data['name'],data['price'],data['amout'],data['text'],data['type'],id))
     conn.commit()
-
+def update_amount(conn,id,amount):
+    cur=conn.cursor()
+    quary="UPDATE products SET amout=? WHERE id=?"
+    cur.execute(quary,(amount,id))
+    conn.commit()
 
 def update_photo_product(conn,id,filename):
     cur=conn.cursor()
@@ -146,3 +150,18 @@ def delete_product(conn,id):
     quary="DELETE FROM products WHERE id=?"
     cur.execute(quary,(id,))
     conn.commit()
+
+def get_product_search(conn,search0):
+    cur =conn.cursor()
+    quary="SELECT * FROM products WHERE name LIKE ?"
+    cur.execute(quary,(f"%{search0}%",))
+    return cur.fetchall()
+
+
+
+    
+def get_product_id(conn,id):
+    cur=conn.cursor()
+    quary="SELECT * FROM products WHERE id=?"
+    cur.execute(quary,(id,))
+    return cur.fetchone()
