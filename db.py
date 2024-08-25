@@ -1,4 +1,5 @@
 import utils
+import check
 
 
 def connect_to_database(name='database.db'):
@@ -26,9 +27,9 @@ def init_db(connection):
 
 def add_user(connection, username, email, lName, password , photo_name):
     cursor = connection.cursor()
-    # hashed_password = utils.hash_password(password)
+    hashed_password = check.hash_password(password)
     query = '''INSERT INTO users (username ,email ,fName ,lName , password , photo_name) VALUES (? ,? ,? ,? ,? ,? )'''
-    cursor.execute(query, (username ,email ,username ,lName , password , photo_name))
+    cursor.execute(query, (username ,email ,username ,lName , hashed_password , photo_name))
     connection.commit()
 
 

@@ -36,13 +36,10 @@ def signin():
 
         user = db.get_user(connection, username)
         if user:
-            if user[3]==password:
+            if check.is_password_correct(password,user[3]):
                 session['username']=user[1]
-                flash("Username already exists. Please choose a different username.", "danger")
                 return redirect(url_for('index'))
-        else:
-            
-            return redirect(url_for('signin'))
+    flash("Invalid username or password", "danger")
     return render_template('signin.html')
 
 
@@ -55,10 +52,13 @@ def signup():
         email = escape(request.form['email'])
         lNAme=escape(request.form['lastname'])
 
-        # if not utils.is_strong_password(password):
-        #     flash(
-        #         "Sorry You Entered a weak Password Please Choose a stronger one", "danger")
-        #     return render_template('signup.html')
+        if not check.is_valid_email(email):
+             flash("Sorry You Entered invalid email", "danger")
+             return render_template('signup.html')
+
+        if not check.is_strong_password(password):
+            flash("Sorry You Entered a weak Password Please Choose a stronger one", "danger")
+            return render_template('signup.html')
 
         user = db.get_user(connection, username)
         if user:
