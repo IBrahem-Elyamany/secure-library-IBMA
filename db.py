@@ -23,6 +23,41 @@ def init_db(connection):
 		)
 	''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            amout INTEGER NOT NULL,
+            price INTEGER NOT NULL,
+            photo TEXT,
+            text TEXT,
+            type TEXT
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            text TEXT NOT NULL,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (product_id) REFERENCES products (id),
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+
+    cursor.execute('''
+		CREATE TABLE IF NOT EXISTS requests (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            product_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users (id),
+            FOREIGN KEY (product_id) REFERENCES products (id)
+		)
+	''')
+
     connection.commit()
 
 
@@ -95,20 +130,20 @@ def update_wallet(connection,id,money):
     cursor.execute(query, (money,id))  
     connection.commit() 
 
-def inittable_product(conn):
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            amout INTEGER NOT NULL,
-            price INTEGER NOT NULL,
-            photo TEXT,
-            text TEXT,
-            type TEXT
-        )
-    ''')
-    conn.commit()
+# def inittable_product(conn):
+#     cursor = conn.cursor()
+#     cursor.execute('''
+#         CREATE TABLE IF NOT EXISTS products (
+#             id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             name TEXT NOT NULL,
+#             amout INTEGER NOT NULL,
+#             price INTEGER NOT NULL,
+#             photo TEXT,
+#             text TEXT,
+#             type TEXT
+#         )
+#     ''')
+#     conn.commit()
 
 def add_product(conn,data):
     cur=conn.cursor()
@@ -166,21 +201,21 @@ def get_product_id(conn,id):
     cur.execute(quary,(id,))
     return cur.fetchone()
 
-def init_comments_table(conn):
-    cur = conn.cursor()
+# def init_comments_table(conn):
+#     cur = conn.cursor()
 
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS comments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            product_id INTEGER NOT NULL,
-            user_id INTEGER NOT NULL,
-            text TEXT NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (product_id) REFERENCES products (id),
-            FOREIGN KEY (user_id) REFERENCES users (id)
-        )
-    ''')
-    conn.commit()
+#     cur.execute('''
+#         CREATE TABLE IF NOT EXISTS comments (
+#             id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             product_id INTEGER NOT NULL,
+#             user_id INTEGER NOT NULL,
+#             text TEXT NOT NULL,
+#             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+#             FOREIGN KEY (product_id) REFERENCES products (id),
+#             FOREIGN KEY (user_id) REFERENCES users (id)
+#         )
+#     ''')
+#     conn.commit()
 
 def add_comment(conn, product_id, user_id, text):
     cur = conn.cursor()
@@ -198,3 +233,40 @@ def get_comments_for_product(connection, product_id):
     '''
     cursor.execute(query, (product_id,))
     return cursor.fetchall()
+
+# def init_requests(connection):
+#     cursor = connection.cursor()
+
+#     cursor.execute('''
+# 		CREATE TABLE IF NOT EXISTS requests (
+# 			id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             FOREIGN KEY (userId) REFERENCES users (id),
+#             FOREIGN KEY (productId) REFERENCES products (id)
+#             quantity INTEGER NOT NULL
+# 		)
+# 	''')
+#     connection.commit()
+
+def add_request(conn,request):
+    cur=conn.cursor()
+    quary="INSERT INTO requests (userId,productId,quantity) VALUES (?,?,?)"
+    cur.execute(quary,(request['userId'],request['productId'],request['quantity']))
+    conn.commit()
+
+def get_request_id(conn,id):
+    cur=conn.cursor()
+    quary="SELECT * FROM requests WHERE id=?"
+    cur.execute(quary,(id,))
+    return cur.fetchone()
+
+def update_request(conn,requestNewQuantity,id):
+    cur=conn.cursor()
+    quary="UPDATE requests SET quantity=? WHERE id=?"
+    cur.execute(quary,(requestNewQuantity,id))
+    conn.commit()
+
+def delete_request(conn,id):
+    cur=conn.cursor()
+    quary="DELETE FROM requests WHERE id=?"
+    cur.execute(quary,(id,))
+    conn.commit()

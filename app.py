@@ -40,10 +40,6 @@ def index():
     return render_template('index.html',products=db.get_product(connection),user=user)
 
 
-
-
-
-
 @app.route('/signin', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 def signin():
@@ -90,6 +86,7 @@ def signup():
             return redirect(url_for('signin'))
     return render_template('signup.html')
 
+
 @app.route('/addproduct',methods=['GET','POST'])
 def addproduct():
     if 'username' in session:
@@ -114,6 +111,7 @@ def addproduct():
             return render_template('addproduct.html')
     return redirect(url_for('index'))
 
+
 @app.route('/deleteproduct/<id>')
 def deleteproduct(id):
     if 'username' in session:
@@ -122,12 +120,14 @@ def deleteproduct(id):
             return redirect(url_for('product'))
     return redirect(url_for('index'))
 
+
 @app.route('/product')
 def product():
     if 'username' in session:
         if session['username']=='admin':
                 return render_template('product.html',products=db.get_product(connection))
     return redirect(url_for('index'))
+
 
 @app.route('/editproduct/<id>',methods=['GET','POST'])
 def editproduct(id):
@@ -161,6 +161,7 @@ def editproduct(id):
                 return redirect(url_for('editproduct',id=id))
             return render_template('editproduct.html',product=product)
     return redirect(url_for('index'))
+
 
 @app.route('/detils/<id>', methods=['GET', 'POST'])
 def detils(id):
@@ -200,10 +201,11 @@ def cart():
     cart = session.get('cart', [])
     
     if 'username' not in session:
-        flash("You must be logged in to add items to your cart.", "warning")
+        flash("You must be logged in to add items to your cart.", "danger")
         return redirect(url_for('signin'))
-    
-    return render_template('cart.html', cart=cart)
+    user = db.get_user(connection, session['username'])
+
+    return render_template('cart.html', cart=cart, user=user)
 
 
 @app.route('/checkout')
@@ -215,7 +217,9 @@ def checkout():
     price = request.args.get('price')
     product=db.get_product_id(connection,product_id)
     session['Correct_MAC'] = check.create_mac(product[3])
-    return render_template('checkout.html', product_id=product_id, name=name, price=price)
+    user = db.get_user(connection, session['username'])
+    return render_template('checkout.html', product_id=product_id, name=name, price=price, user=user)
+
 
 @app.route('/confirm_purchase', methods=['POST'])
 def confirm_purchase():
@@ -240,12 +244,16 @@ def confirm_purchase():
     else:
         flash ("Purchase Failed, Please Try Again","danger")
         return redirect(url_for('index'))
+
+
 @app.route('/logout')
 def logout():
     if 'username' not in session:
         return redirect(url_for('index'))
     session.pop('username',None)
     return redirect(url_for('index'))
+
+
 @app.route('/deleteuser/<id>')
 def deleteuser(id):
     if 'username' in session:
@@ -254,7 +262,6 @@ def deleteuser(id):
             return redirect(url_for('index'))
         return redirect(url_for('index'))
     return redirect(url_for('index'))
-
 
 
 @app.route('/addtowallet/<id>',methods=['GET','POST'])
@@ -269,6 +276,7 @@ def addtowallet(id):
                 return redirect(url_for('index'))
             return render_template('addtowallet.html',user=user)
     return redirect(url_for('index'))
+
 
 @app.route('/search',methods=['GET','POST'])
 def search():
@@ -287,7 +295,5 @@ def search():
 
 if __name__ == '__main__':
     db.init_db(connection)
-    db.inittable_product(connection)
     db.seed_admin_user(connection)
-    db.init_comments_table(connection)
     app.run(debug=True)
