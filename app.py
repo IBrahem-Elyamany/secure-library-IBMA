@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash ,abort
 import db
 import os
-import utils
 import check
 from markupsafe import escape
 from flask_limiter import Limiter
@@ -36,9 +35,9 @@ def index():
             return render_template('admin.html',users=db.get_all_users(connection))
         else:
             user=db.get_user(connection,session['username'])
-            return render_template('users.html',products=db.get_product(connection),user=user)
-
-    return render_template('index.html',products=db.get_product(connection))
+            return render_template('index.html',products=db.get_product(connection),user=user)
+    user=None
+    return render_template('index.html',products=db.get_product(connection),user=user)
 
 
 
@@ -190,32 +189,37 @@ def add_to_cart(id0):
 @app.route('/cart')
 def cart():
     cart = session.get('cart', [])
+    
+    if 'username' not in session:
+        flash("You must be logged in to add items to your cart.", "warning")
+        return redirect(url_for('signin'))
+    
     return render_template('cart.html', cart=cart)
 
 
 @app.route('/checkout')
 def checkout():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     product_id = request.args.get('product_id')
     name = request.args.get('name')
     price = request.args.get('price')
     product=db.get_product_id(connection,product_id)
     session['Correct_MAC'] = check.create_mac(product[3])
-
     return render_template('checkout.html', product_id=product_id, name=name, price=price)
 
 @app.route('/confirm_purchase', methods=['POST'])
 def confirm_purchase():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     product_id = request.form['product_id']
     price = request.form['price']
     product=db.get_product_id(connection,product_id)
     username=session['username']
     user=db.get_user(connection,username)
-    money=int(user[7])-int(product[3])
-    
-    
     Possible_Correct_MAC = check.create_mac(price)
-
     if 'Correct_MAC' in session and session['Correct_MAC'] == Possible_Correct_MAC:
+        money=int(user[7])-int(price)
         if money>=0:
             flash(f"Purchase confirmed at price ${price}.",'success')
             db.update_wallet(connection,user[0],money)
@@ -224,12 +228,13 @@ def confirm_purchase():
         else:
             flash("Sorry there is not enough Money",'danger')
             return redirect(url_for('index'))
-    return redirect(url_for('index'))
-
-    
-    
+    else:
+        flash ("Purchase Failed, Please Try Again","danger")
+        return redirect(url_for('index'))
 @app.route('/logout')
 def logout():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     session.pop('username',None)
     return redirect(url_for('index'))
 @app.route('/deleteuser/<id>')
@@ -259,15 +264,15 @@ def addtowallet(id):
 @app.route('/search',methods=['GET','POST'])
 def search():
     if request.method=='POST':
-        search0=request.form['search']
-        products=db.get_product_search(connection,search0)
+        search=escape(request.form['search'])
+        products=db.get_product_search(connection,search)
+        
         if 'username' in session:
             user=db.get_user(connection,session['username'])
+            return render_template('index.html',products=products,user=user)
         else:
             user=None
-        return render_template('searchre.html',products=products,user=user)
-    
-    return redirect(url_for('index'))
+            return render_template('index.html',products=products,user=user)
 
 
 
