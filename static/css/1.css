@@ -300,3 +300,100 @@ h1 {
     max-width: 30%;
     margin-bottom: 20px;
 }
+
+.reviews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.review-card {
+    background-color: rgba(255, 255, 255, 0.1); /* نصف شفاف ليتماشى مع الخلفية */
+    padding: 20px;
+    width: 45%; /* لضمان أن تكون التعليقات بجانب بعضها */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* لخلق تأثير زجاجي يتماشى مع الخلفية */
+    color: #fff; /* لون النص يتماشى مع الخلفية */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid rgba(255, 102, 0, 0.8);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.comment-timestamp {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 5px;
+}
+
+.comment-form {
+    margin-top: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    color: #fff;
+}
+
+.comment-form label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.2em;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    background-color: rgba(255, 255, 255, 0.2); /* نصف شفاف ليتماشى مع الخلفية */
+    color: #fff;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 50px;
+    background-color: rgba(255, 102, 0, 0.8);
+    color: #fff;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: rgba(255, 102, 0, 1);
+}
