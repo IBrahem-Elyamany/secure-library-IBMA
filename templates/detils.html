@@ -47,12 +47,12 @@
 
         <div class="flex-box">
             <div class="left">
-                <div class="big-img">
-                    <img style="border:width:300px  height:300px;" src="{{url_for('static',filename='uploads/products/'+id[4])}}"/>
+                <div class="big-img"style="margin-top: 50px">
+                    <img style="width:400px;  height:600px;" src="{{url_for('static',filename='uploads/products/'+id[4])}}"/>
                 </div>
             </div>
     
-            <div class="right">
+            <div class="right"style="margin-left: 200px;">
                 <div style="color:white;" class="pname">{{ id[1] }}</div>
                 <div style="color:white;" class="price">{{ id[6] }}</div>
                 <div style="color:white;" class="price">${{ id[3] }}</div>
@@ -60,11 +60,11 @@
                     <p style="color:white;" >Quantity :</p>
                     <input type="number" min="1" max="{{ id[2] }}" value="1">
                 </div>
-                <!-- <div class="pname">Details : {{ id[5] }}</div> -->
-
                 <div class="btn-box">
                     <button class="cart-btn" ><a href="{{url_for('add_to_cart',id0=id[0])}}" >Add to Cart</a></button>
                 </div>
+                <div class="pname" style="color: #cccccc">{{ id[5] }}</div>
+
             </div>
         </div>
     </div>
