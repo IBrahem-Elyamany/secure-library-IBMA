@@ -14,7 +14,7 @@ def allowed_size(file):
     return file_size <= 5*1024*1024
 
 def is_strong_password(password):
-    if len(password) > 8:
+    if len(password) < 8:
         return False
     if not re.search(r"[A-Z]", password):
         return False

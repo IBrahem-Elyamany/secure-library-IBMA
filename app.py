@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash ,abort
 import db
 import os
 import utils
@@ -14,6 +14,20 @@ app.config['UPLOAD_FOLDER_PRODUCTS'] = 'static/uploads/products/'
 connection = db.connect_to_database()
 app.secret_key = "IBMA"
 limiter = Limiter(app=app, key_func=get_remote_address,default_limits=["50 per minute"], storage_uri="memory://")
+
+#part WAF to protect (SQL injection and XSS)
+def is_malicious_request(req):
+    malicious_patterns = ["SELECT", "DROP", "<script>", "UNION", "--"]
+    for pattern in malicious_patterns:
+        if pattern in req.data.decode('utf-8').upper() or pattern in req.query_string.decode('utf-8').upper():
+            return True
+    return False
+
+@app.before_request
+def check_request():
+    if is_malicious_request(request):
+        abort(403)  
+
 
 @app.route('/')
 def index():
@@ -43,7 +57,11 @@ def signin():
             if check.is_password_correct(password,user[3]):
                 session['username']=user[1]
                 return redirect(url_for('index'))
-    flash("Invalid username or password", "danger")
+            else:
+                flash("Invalid username or password", "danger")
+        else :
+            flash("Invalid username or password", "danger")
+
     return render_template('signin.html')
 
 

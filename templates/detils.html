@@ -7,13 +7,57 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}" />
     <link rel="shortcut icon" href="static/uploads/book-icon-png-26.png" type="image/x-icon">
-    <title>Detils about {{id[1]}}</title>
+    <title>Detils about {{id[1]}} - IBMA</title>
 </head>
 <body>
-    <img style="border-radius: 30px 30px 0px 0px; width:300px; height:230px;" src="{{url_for('static',filename='uploads/products/'+id[4])}}"/>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>IBMA.</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/" class="link active">Home</a></li>
+                    
+                </ul>
+                
+            </div>
+    
+            <div class="nav-button">
+                <button class="btn white-btn" onclick="window.location.href='/signin';">Sign In</button>
+                <button class="btn" id="registerBtn"  onclick="window.location.href='/signup';">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
 
-    <a href="{{url_for('add_to_cart',id0=id[0])}}">Add to Cart</a>
+        <div class="flex-box">
+            <div class="left">
+                <div class="big-img">
+                    <img style="border-radius: 30px 30px 0px 0px; width:300px; height:280px;" src="{{url_for('static',filename='uploads/products/'+id[4])}}"/>
+                </div>
+            </div>
+    
+            <div class="right">
+                <div class="url">Home > {{ id[1] }}</div>
+                <div class="pname">{{ id[1] }}</div>
+                <div class="price">{{ id[6] }}</div>
+                <div class="price">${{ id[3] }}</div>
+                <div class="quantity">
+                    <p>Quantity :</p>
+                    <input type="number" min="1" max="{{ id[2] }}" value="1">
+                </div>
+                <!-- <div class="pname">Details : {{ id[5] }}</div> -->
+
+                <div class="btn-box">
+                    <button class="cart-btn" ><a href="{{url_for('add_to_cart',id0=id[0])}}" >Add to Cart</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
