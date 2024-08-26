@@ -223,8 +223,8 @@ border-radius: 30px;
 .search-button {
     padding: 10px 20px;
     border: none;
-    background-color: #ddd;
-    color: #fff;
+    background-color: #dddddd9a;
+    color: #0026ffb8;
     border-radius: 0 30px 30px 0;
     cursor: pointer;
     display: flex;

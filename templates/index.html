@@ -7,40 +7,55 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
-    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Home</title>
 </head>
 <body>
- <div class="wrapper">
-    <nav class="nav">
-        <div class="nav-logo">
-            <p>IBMA.</p>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <ul>
-                <li><a href="/" class="link active">Home</a></li>
-                
-            </ul>
-            
-        </div>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                {%if user %}
+                <p>{{user[1]}}</p>
+                {%else%}
+                <p>IBMA</p>
+                {%endif%}
+            </div>
+            {% include 'includes/alert.html' %}
 
-        <div class="nav-button">
-            <button class="btn white-btn" onclick="window.location.href='/signin';">Sign In</button>
-            <button class="btn" id="registerBtn"  onclick="window.location.href='/signup';">Sign Up</button>
-        </div>
-        <div class="nav-menu-btn">
-            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
-        </div>
-    </nav>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="/" class="link active">Home</a></li>
+                    <li><a href="/cart" class="link">Cart</a></li>
+                    {%if  user%}
+                    <li><a href="#" class="link">Profile</a></li>
+                    <li><a href="/logout" class="link">Logout</a></li>
+                    <h3 class="user-money"><i style="color:white;"class="fa-solid fa-wallet fa-1xl"></i>  : {{user[7]}}</h3>
+                    {%endif%}
+                </ul>
+                
+            </div>
+            {%if not user%}
+            <div class="nav-button">
+                <button class="btn white-btn" onclick="window.location.href='/signin';">Sign In</button>
+                <button class="btn" id="registerBtn"  onclick="window.location.href='/signup';">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+            {%endif%}
+        </nav>
     
     <div   class="content-container">
         <div class="search-bar-container">
             <form action="/search" method="POST" class="search-form">
-                <input  type="text" name="search" placeholder="Search for products..." class="search-input">
+                <input style="padding: 10px 10px;" type="text" name="search" placeholder="Search for products..." class="search-input">
                 <button style="padding: 16px ;" type="submit" class="search-button"><i class='bx bx-search'></i></button>
             </form>
         </div>
-
+       
         <div class="cards-container">
+            {%if products%}
             {% for i in products %}
                 <div class="card">
                     <img style="border-radius: 30px 30px 0px 0px; width:300px; height:230px;" src="{{ url_for('static', filename='uploads/products/' + i[4]) }}" />
@@ -53,7 +68,13 @@
                     </div>
                 </div>
             {% endfor %}
+            {%else%}
+            <div  >
+                <h1 style="color:white;margin-left: 600px;padding: 0px 80px;" >NOT FOUND </h1>
+            </div>
+            {%endif%}
         </div>
+        
     </div>
 </div>
 
