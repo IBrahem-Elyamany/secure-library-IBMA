@@ -9,6 +9,7 @@ from flask_limiter.util import get_remote_address
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['UPLOAD_FOLDER_PRODUCTS'] = 'static/uploads/products/'
+app.config['UPLOAD_FOLDER_profilePhoto'] = 'static/uploads/profilePhoto/'
 
 connection = db.connect_to_database()
 app.secret_key = "IBMA"
@@ -290,6 +291,48 @@ def search():
         else:
             user=None
             return render_template('index.html',products=products,user=user)
+
+
+@app.route('/profile', methods=['GET', 'POST',])
+def profile():
+    if 'username' in session:
+        if request.method == 'GET':
+            username = request.args.get('username', session['username'])
+            if username != session['username']:
+                return redirect(url_for('login'))
+            user = db.get_user(connection, username)
+            return render_template('profile.html', user=user)
+        
+        elif request.method == 'POST':
+            form_type = request.form.get('form_name')
+            username = request.args.get('username', session['username'])
+            if username != session['username']:
+               return redirect(url_for('login'))
+            
+
+            if form_type == 'upload_photo':
+                photo = request.files.get('profile_picture')
+                if not check.allowed_size(photo):
+                    flash('invalid size','danger')
+                    return redirect(url_for('profile'))
+                if not check.allowed_ex(photo.filename):
+                    flash('invalid extention' ,'danger')
+                    return redirect(url_for('profile'))
+                db.update_photo(connection, photo.filename, username)
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER_profilePhoto'], photo.filename)) 
+            elif form_type == 'update_user_data':
+                user_data = {
+                    "username": session['username'],
+                    "lname": escape(request.form.get('l-name')),
+                    "email": escape(request.form.get('email')),
+                    "passowrd": check.hash_password(request.form.get('pass'))
+                }
+                db.update_user(connection , user_data)
+            
+            user = db.get_user(connection, username)
+            return render_template('profile.html', user=user) 
+    else:
+        return redirect(url_for('login'))
 
 
 

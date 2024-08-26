@@ -99,10 +99,18 @@ def delete_user(connection, id):
     cursor.execute(query, (id,)) 
     connection.commit()
 
+def add_user(connection, username, email, lName, password , photo_name):
+    cursor = connection.cursor()
+    hashed_password = check.hash_password(password)
+    query = '''INSERT INTO users (username ,email ,fName ,lName , password , photo_name,wallet) VALUES (? ,? ,? ,? ,? ,?,0)'''
+    cursor.execute(query, (username ,email ,username ,lName , hashed_password , photo_name))
+    connection.commit()
+
+
 def update_user(connection , user_data):
     cursor = connection.cursor()
-    query = ''' UPDATE users set fname = ? , lName = ? , creditCard = ? WHERE username = ? '''
-    cursor.execute(query,(user_data['fname'] , user_data['lname'] , user_data['card'] , user_data['username']))
+    query = ''' UPDATE users set  email = ? , fName = ? ,lName = ? ,password = ? WHERE username = ? '''
+    cursor.execute(query,( user_data['email'] , user_data['username'] , user_data['lname'] , user_data['passowrd'] , user_data['username']))
     connection.commit() 
 
 

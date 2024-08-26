@@ -291,3 +291,48 @@ header{
 .button-56:hover {
   outline: 0;
 }
+
+
+.profile_M{
+    display: flex;
+    display: grid;
+    justify-content: center;
+    align-content: space-around;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+.profile_picture
+{
+    
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}
+.acount_picture{
+    display: grid;
+    align-content: space-around;
+}
+.acount_details {
+display: grid;
+align-content: space-around;
+}
+.acount_details input{
+    border-radius: 10px;
+    padding: 5px;
+}
+.acount_details label{
+    font-weight: bold;
+    font-size: larger;
+    color: rgb(255, 255, 255);
+}
+.btnpro{
+  margin-left:150px ;
+    width: 100px;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: orange;
+}
+.btnpro:hover{
+    background: rgba(255, 255, 255, 0.3);
+}
+

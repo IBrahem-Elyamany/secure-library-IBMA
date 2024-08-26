@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/1.css') }}" />
+  <title>profile</title>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo">
+        {%if user %}
+        <p>{{user[1]}}</p>
+        {%else%}
+        <p>IBMA</p>
+        {%endif%}
+    </div>
+  
+    <div class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="/" class="link">Home</a></li>
+            <li><a href="/cart" class="link">Cart</a></li>
+            {%if  user%}
+            <li><a href="/profile" class="link active">Profile</a></li>
+            <li><a href="/logout" class="link">Logout</a></li>
+            <h3 class="user-money"><i style="color:white;"class="fa-solid fa-wallet fa-1xl"></i>  : {{user[7]}}</h3>
+            {%endif%}
+        </ul>
+        
+    </div>
+    {%if not user%}
+    <div class="nav-button">
+        <button class="btn white-btn" onclick="window.location.href='/signin';">Sign In</button>
+        <button class="btn" id="registerBtn"  onclick="window.location.href='/signup';">Sign Up</button>
+    </div>
+    <div class="nav-menu-btn">
+        <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+    </div>
+    {%endif%}
+</nav>
+
+<form action="/profile" method="POST" enctype="multipart/form-data">
+
+    <div class="profile_M">
+      {% include 'includes/alert.html' %}
+        <div class="acount_picture">
+            <input type="hidden" name="form_name" value="upload_photo"> <!--  ?? -->
+            <h1>Profile Picture</h1>
+           
+            <img class="profile_picture" src=" {{url_for('static' ,filename='uploads/profilePhoto/' +user[6])}}" alt="profile_picture">
+        <input  type="file" name="profile_picture" >
+        <br>
+        <button class="btnpro" type="submit">Upload New Image</button>
+        </div>
+  </form>
+<br><br> <br>
+<form action="/profile" method="POST" enctype="multipart/form-data">
+            <div class="acount_details">
+                <input type="hidden" name="form_name" value="update_user_data">  <!--  ?? -->
+                <h1>Acount Details</h1>
+               
+                <label for="fname">Username:</label>
+                <input  name="username" type="text" id="fname" value="{{user[1]}}" placeholder="username" required readonly>
+                <br>
+                <label for="lname">Last Name:</label>
+                <input name="l-name" type="text" id="lname" value="{{user[5]}}" placeholder="last name" required>
+                <br>
+                <label for="email">Email:</label>
+                <input name="email" type="email" id="email" value="{{user[2]}}" placeholder="email" required>
+                <br>
+                <label for="password"> password:</label>
+                <input name="pass" type="password" id="password" value="{{user[3]}}" placeholder="password" required>
+          
+            <br>
+            <button class="btnpro"  type="submit" value="Upload" >save change</button>
+            </div>
+
+
+          </form>
+   </div>
+
+</body>
+</html>

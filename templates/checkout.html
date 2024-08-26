@@ -22,10 +22,10 @@
 
             <div class="nav-menu" id="navMenu">
                 <ul>
-                    <li><a href="/" class="link active">Home</a></li>
+                    <li><a href="/" class="link">Home</a></li>
                     <li><a href="/cart" class="link">Cart</a></li>
                     {%if  user%}
-                    <li><a href="#" class="link">Profile</a></li>
+                    <li><a href="/profile" class="link">Profile</a></li>
                     <li><a href="/logout" class="link">Logout</a></li>
                     <h3 class="user-money"><i style="color:white;"class="fa-solid fa-wallet fa-1xl"></i>  : {{user[7]}}</h3>
                     {%endif%}
