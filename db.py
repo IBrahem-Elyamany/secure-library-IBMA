@@ -165,3 +165,36 @@ def get_product_id(conn,id):
     quary="SELECT * FROM products WHERE id=?"
     cur.execute(quary,(id,))
     return cur.fetchone()
+
+def init_comments_table(conn):
+    cur = conn.cursor()
+
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            text TEXT NOT NULL,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (product_id) REFERENCES products (id),
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    conn.commit()
+
+def add_comment(conn, product_id, user_id, text):
+    cur = conn.cursor()
+    query = '''INSERT INTO comments (product_id, user_id, text) VALUES (?, ?, ?)'''
+    cur.execute(query, (product_id, user_id, text))
+    conn.commit()
+
+def get_comments_for_product(connection, product_id):
+    cursor = connection.cursor()
+    query = '''
+        SELECT users.username, comments.text, comments.timestamp
+        FROM comments
+        JOIN users ON comments.user_id = users.id
+        WHERE comments.product_id = ?
+    '''
+    cursor.execute(query, (product_id,))
+    return cursor.fetchall()

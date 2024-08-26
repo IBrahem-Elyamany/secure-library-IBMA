@@ -164,8 +164,17 @@ def editproduct(id):
 
 @app.route('/detils/<id>', methods=['GET', 'POST'])
 def detils(id):
-    idd = db.get_product_id(connection,id)
-    return render_template('detils.html',id=idd)
+    idd = db.get_product_id(connection, id)
+    comments = db.get_comments_for_product(connection, idd[0])
+    if 'username' not in session:
+        user=None
+        return render_template('detils.html', id=idd, comments=comments,user=user)
+    user = db.get_user(connection, session['username'])
+    if request.method == 'POST':
+        comment = escape(request.form['comment'])
+        db.add_comment(connection, idd[0], user[0], comment)
+        return redirect(url_for('detils', id=id))
+    return render_template('detils.html', id=idd, comments=comments,user=user)
 
 
 @app.route('/add_to_cart/<id0>')
@@ -280,4 +289,5 @@ if __name__ == '__main__':
     db.init_db(connection)
     db.inittable_product(connection)
     db.seed_admin_user(connection)
+    db.init_comments_table(connection)
     app.run(debug=True)
