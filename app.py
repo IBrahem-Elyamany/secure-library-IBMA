@@ -301,7 +301,7 @@ def profile():
         if request.method == 'GET':
             username = request.args.get('username', session['username'])
             if username != session['username']:
-                return redirect(url_for('login'))
+                return redirect(url_for('signin'))
             user = db.get_user(connection, username)
             return render_template('profile.html', user=user)
         
@@ -309,7 +309,7 @@ def profile():
             form_type = request.form.get('form_name')
             username = request.args.get('username', session['username'])
             if username != session['username']:
-               return redirect(url_for('login'))
+               return redirect(url_for('signin'))
             
 
             if form_type == 'upload_photo':
@@ -334,7 +334,7 @@ def profile():
             user = db.get_user(connection, username)
             return render_template('profile.html', user=user) 
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('signin'))
 
 
 
