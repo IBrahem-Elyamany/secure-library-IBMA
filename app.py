@@ -237,6 +237,7 @@ def confirm_purchase():
         if money>=0:
             flash(f"Purchase confirmed at price ${price}.",'success')
             db.update_wallet(connection,user[0],money)
+            session.pop('cart',None)
             db.update_amount(connection,product[0],int(product[2])-1)
             return redirect(url_for('index'))
         else:
@@ -252,6 +253,7 @@ def logout():
     if 'username' not in session:
         return redirect(url_for('index'))
     session.pop('username',None)
+    session.pop('cart',None)
     return redirect(url_for('index'))
 
 
